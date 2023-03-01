@@ -13,13 +13,13 @@ from sqlalchemy import create_engine
 import pymysql
 
 
-
+pass = st.secrets[dbPassword"]
 
 # ------------------------------- mySQL Server ------------------------------
 db = mysql.connector.connect(
     host="gt7champ.cqlgkgr3sepu.us-west-2.rds.amazonaws.com",
     user="admin",
-    password= st.secrets["dbPassword"],
+    password= pass,
     port="3306",
     database="GT7"
 )
