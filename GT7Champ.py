@@ -19,7 +19,7 @@ import pymysql
 db = mysql.connector.connect(
     host="gt7champ.cqlgkgr3sepu.us-west-2.rds.amazonaws.com",
     user="admin",
-    password= st.secrets["dbPassword"]
+    password= st.secrets["dbPassword"],
     port="3306",
     database="GT7"
 )
