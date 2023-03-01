@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 import pymysql
 
 
-global pass = st.secrets[dbPassword"]
+global pass = st.secrets["dbPassword"]
 
 # ------------------------------- mySQL Server ------------------------------
 db = mysql.connector.connect(
