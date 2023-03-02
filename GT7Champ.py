@@ -125,10 +125,10 @@ if selected == "Race" :
 
     st.subheader("Track")
                 
-    st.write("Race Track:  ", race[0])
-    st.write("Race Length:  ", race[2])
-    st.write("Race Weather:  ", race[3])
-    st.write("Race Surface:  ", race[5])
+    st.write("Race Track:  ", race[1])
+    st.write("Race Length:  ", race[3])
+    st.write("Race Weather:  ", race[4])
+    st.write("Race Surface:  ", race[6])
     st.subheader("Performance Points")
     st.write("Race PP: ", racepp)
     st.subheader("Vehicle")
@@ -144,7 +144,7 @@ if selected == "Race" :
     st.write("---") 
     st.header(f"Race Results")
     st.write("---") 
-    st.write(race[0])                
+    st.write(race[1])                
     firstplace = st.radio("First Place", racerNames, horizontal=True, index=0)
     secondplace = st.radio("Second Place", racerNames, horizontal=True, index=0)
     pole = st.radio("Pole Position", racerNames, horizontal=True, index=0)
