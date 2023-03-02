@@ -57,7 +57,7 @@ with st.sidebar:
         menu_title=None,
         options=["Race", "Standings", "Configuration"],
         icons=["caret-right-square-fill", "card-list", "gear"],
-        default_index=0, #Starting Menu Item,
+        default_index=1, #Starting Menu Item,
         #### Menu Settings ####
         styles={
             "container": {"padding": "0!important", "background-color": "#B0B0B0"},
