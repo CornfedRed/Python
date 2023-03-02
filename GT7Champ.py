@@ -111,63 +111,53 @@ if selected == "Race" :
 
     selected_championship = st.selectbox("Select Championship:", championship)
         
-                   
 
-            
-            
+    st.write("---")     
+    st.title(f"Race")
+    st.write("---") 
 
-            
+    global race
+    global racetype
 
+    race = random.choice(tracks)        
+    racetype = random.choice(powertrainName)
+    racerNames.sort()
 
-
-
-    if generateRace:
-        st.write("---")     
-        st.title(f"Race")
-        st.write("---") 
-                    
-        race = random.choice(tracks)        
-        racetype = random.choice(powertrainName)
-        racerNames.sort()
-
-        st.subheader("Track")
-                    
-        st.write("Race Track:  ", race[0])
-        st.write("Race Length:  ", race[2])
-        st.write("Race Weather:  ", race[3])
-        st.write("Race Surface:  ", race[5])
-        st.subheader("Performance Points")
-        st.write("Race PP: ", racepp)
-        st.subheader("Vehicle")
-        if race[3] == "Dirt" :
-            st.write("Vehicle Type: 4WD")
-        else :
+    st.subheader("Track")
+                
+    st.write("Race Track:  ", race[0])
+    st.write("Race Length:  ", race[2])
+    st.write("Race Weather:  ", race[3])
+    st.write("Race Surface:  ", race[5])
+    st.subheader("Performance Points")
+    st.write("Race PP: ", racepp)
+    st.subheader("Vehicle")
+    if race[3] == "Dirt" :
+        st.write("Vehicle Type: 4WD")
+    else :
             st.write("Vehicle Type: ", racetype)
   
-        with st.form("Race Form", clear_on_submit=True):
+
             
-            
-            st.write("---") 
-            st.header(f"Race Results")
-            st.write("---") 
-
-            st.write(race[0])
-                        
-            firstplace = st.radio("First Place", racerNames, horizontal=True, index=0)
-            secondplace = st.radio("Second Place", racerNames, horizontal=True, index=0)
-            pole = st.radio("Pole Position", racerNames, horizontal=True, index=0)
-            fastestlap = st.radio("Fastest Lap", racerNames, horizontal=True, index=0)
-
-
-            submitted = st.form_submit_button("Save Race Results")           
+                
+                
+    st.write("---") 
+    st.header(f"Race Results")
+    st.write("---") 
+    st.write(race[0])                
+    firstplace = st.radio("First Place", racerNames, horizontal=True, index=0)
+    secondplace = st.radio("Second Place", racerNames, horizontal=True, index=0)
+    pole = st.radio("Pole Position", racerNames, horizontal=True, index=0)
+    fastestlap = st.radio("Fastest Lap", racerNames, horizontal=True, index=0)
 
 
+    saveRace = st.button("Save Race Results")           
 
-            if submitted:
-                        
-                cursor.execute("INSERT INTO completedRaces (championship, raceTrack, firstPlace, secondPlace, Pole, fastestLap) VALUES(%s,%s,%s,%s,%s,%s)", (selected_championship,race[0],firstplace,secondplace,pole,fastestlap))
-                db.commit()
-                st.success("Race Results Saved!")  
+    if saveRace:
+                
+        cursor.execute("INSERT INTO completedRaces (championship, raceTrack, firstPlace, secondPlace, Pole, fastestLap) VALUES(%s,%s,%s,%s,%s,%s)", (selected_championship,race[0],firstplace,secondplace,pole,fastestlap))
+        db.commit()
+        st.success("Race Results Saved!")  
                 
         
 
@@ -182,7 +172,7 @@ if selected == "Race" :
     
     
     
-########################################################################
+###########################################################################
 # ------------------------------- Standings -------------------------------
 if selected == "Standings" :
     cursor.execute("SELECT champName from championship")
@@ -299,7 +289,24 @@ if selected == "Configuration" :
 # ------------------------------- Add Track-------------------------------
     
     if selectedconfig == "Add Track" :
-        st.write("Track")
+        
+        st.header("Add Track")
+        with st.form("Track Form"):
+            trackName = st.text_input("Track Name")
+            countryName = st.text_input("Country")
+            totalLength =st.text_input("Length")
+            weatherAvail = st.radio("Weather Type", ('Wet and Dry', 'Dry Only'), horizontal=True, index=0)
+            timeAvail = st.radio("Driveable at night?", ('Yes', 'Twilight Only', 'No'), horizontal=True, index=0)
+            typeTrack = st.radio("Surface Type", ('Asphalt', 'Asphalt - Rally', 'Asphalt - Roval', 'Asphalt - Street', 'Dirt', 'Concrete'), horizontal=True, index=0)
+            reverseLayout = st.radio("Reverse Available", ('Yes', 'No'), horizontal=True, index=0)
+            submitted = st.form_submit_button("Save Track")
+
+            if submitted:
+                cursor.execute("INSERT INTO Tracks (Track, Country, Length, Weather, Drivable, Type, Reverse) VALUES (%s, %s, %s, %s, %s, %s, %s)", (trackName, countryName, totalLength, weatherAvail, timeAvail,typeTrack,reverseLayout))
+                db.commit()
+                st.success("Power Train Added!")
+
+
         
  
 
@@ -308,9 +315,15 @@ if selected == "Configuration" :
     if selectedconfig == "Add Vehicle Type" :
     
         st.header(f"Add Drivetrain")
-        cursor.execute("show databases")
-        for i in cursor:
-            st.write(i)
+        with st.form('Power Trains'):
+            ptName = st.text_input("PowerTrain")
+            submitted = st.form_submit_button("Save Power Train")
+
+            if submitted:
+                cursor.execute("INSERT INTO powerTrain (powerType) VALUES (%s)", (ptName))
+                db.commit()
+                st.success("Power Train Added!")
+
 
    
 # ------------------------------- Add Championship-------------------------------
@@ -318,10 +331,6 @@ if selected == "Configuration" :
     if selectedconfig == "Add Championship" :
 
         st.header(f"Add Championship")
-
-        
-
-
         with st.form("Championship Form", clear_on_submit=True):
             cname = st.text_input("Championship Name:")
             firstp = st.number_input("First Place Points:", min_value=1, max_value=999, format="%i")
@@ -333,12 +342,6 @@ if selected == "Configuration" :
 
             
             if submitted:
-                
-                
                 cursor.execute("INSERT INTO championship (champName, champFirst, champSecond, champThird, champFastest, champPole) VALUES (%s,%s,%s,%s,%s,%s)", (cname,firstp,secondp,thirdp,fastest,pole))
-
-                          
-                
                 db.commit() 
                 st.success("Championship Added!")
-             
