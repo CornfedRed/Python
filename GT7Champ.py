@@ -7,10 +7,8 @@ from random import randrange
 from streamlit_option_menu import option_menu
 import mysql.connector
 import pandas as pd
-from streamlit_extras.dataframe_explorer import dataframe_explorer
-from streamlit_modal import Modal
-from sqlalchemy import create_engine
-import pymysql
+
+
 
 
 
