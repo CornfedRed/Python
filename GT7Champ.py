@@ -17,7 +17,7 @@ import pandas as pd
 db = mysql.connector.connect(
     host="gt7champ.cqlgkgr3sepu.us-west-2.rds.amazonaws.com",
     user="admin",
-    password= st.secrets["dbPassword"],
+    password= "Gvo4HLcsAf2S9VeLo1Rl",
     port="3306",
     database="GT7"
 )
@@ -98,22 +98,20 @@ if selected == "Race" :
     powertrainName = [item[0] for item in powerTrains]
     
 
-    
-  
-    with st.form("Race Form", clear_on_submit=True):
-        st.subheader("Select desired settings")
+    generateRace = st.button("Generate Race")
 
-
-        slider_range = st.slider("Select Minimum and Maximum PP", value=[400,1100])
-        minPP = slider_range[0]
-        maxPP = slider_range[1]
-        racepp = random.randint(minPP,maxPP)
-
-        selected_championship = st.selectbox("Select Championship:", championship)
         
+    st.subheader("Select desired settings")
+
+
+    slider_range = st.slider("Select Minimum and Maximum PP", value=[400,1100])
+    minPP = slider_range[0]
+    maxPP = slider_range[1]
+    racepp = random.randint(minPP,maxPP)
+
+    selected_championship = st.selectbox("Select Championship:", championship)
         
-        
-            
+                   
 
             
             
@@ -123,7 +121,7 @@ if selected == "Race" :
 
 
 
-
+    if generateRace:
         st.write("---")     
         st.title(f"Race")
         st.write("---") 
@@ -145,30 +143,31 @@ if selected == "Race" :
             st.write("Vehicle Type: 4WD")
         else :
             st.write("Vehicle Type: ", racetype)
+  
+        with st.form("Race Form", clear_on_submit=True):
+            
+            
+            st.write("---") 
+            st.header(f"Race Results")
+            st.write("---") 
+
+            st.write(race[0])
+                        
+            firstplace = st.radio("First Place", racerNames, horizontal=True, index=0)
+            secondplace = st.radio("Second Place", racerNames, horizontal=True, index=0)
+            pole = st.radio("Pole Position", racerNames, horizontal=True, index=0)
+            fastestlap = st.radio("Fastest Lap", racerNames, horizontal=True, index=0)
+
+
+            submitted = st.form_submit_button("Save Race Results")           
 
 
 
-        st.write("---") 
-        st.header(f"Race Results")
-        st.write("---") 
-
-        st.write(race[0])
-                    
-        firstplace = st.radio("First Place", racerNames, horizontal=True, index=0)
-        secondplace = st.radio("Second Place", racerNames, horizontal=True, index=0)
-        pole = st.radio("Pole Position", racerNames, horizontal=True, index=0)
-        fastestlap = st.radio("Fastest Lap", racerNames, horizontal=True, index=0)
-
-
-        submitted = st.form_submit_button("Save Race Results")           
-
-
-
-        if submitted:
-                    
-            cursor.execute("INSERT INTO completedRaces (championship, raceTrack, firstPlace, secondPlace, Pole, fastestLap) VALUES(%s,%s,%s,%s,%s,%s)", (selected_championship,race[0],firstplace,secondplace,pole,fastestlap))
-            db.commit()
-            st.success("Race Results Saved!")  
+            if submitted:
+                        
+                cursor.execute("INSERT INTO completedRaces (championship, raceTrack, firstPlace, secondPlace, Pole, fastestLap) VALUES(%s,%s,%s,%s,%s,%s)", (selected_championship,race[0],firstplace,secondplace,pole,fastestlap))
+                db.commit()
+                st.success("Race Results Saved!")  
                 
         
 
@@ -343,7 +342,3 @@ if selected == "Configuration" :
                 db.commit() 
                 st.success("Championship Added!")
              
-
- 
-   
-
