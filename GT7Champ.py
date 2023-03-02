@@ -155,7 +155,7 @@ if selected == "Race" :
 
     if saveRace:
                 
-        cursor.execute("INSERT INTO completedRaces (championship, raceTrack, firstPlace, secondPlace, Pole, fastestLap) VALUES(%s,%s,%s,%s,%s,%s)", (selected_championship,race[0],firstplace,secondplace,pole,fastestlap))
+        cursor.execute("INSERT INTO completedRaces (championship, raceTrack, firstPlace, secondPlace, Pole, fastestLap) VALUES(%s,%s,%s,%s,%s,%s)", (selected_championship,race[1],firstplace,secondplace,pole,fastestlap))
         db.commit()
         st.success("Race Results Saved!")  
                 
